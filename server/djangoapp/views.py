@@ -50,7 +50,7 @@ def logout(request):
 # Create a `registration` view to handle sign up request
 @csrf_exempt
 def registration(request):
-    #context = {}
+    # context = {}
 
     data = json.loads(request.body)
     username = data['userName']
@@ -59,7 +59,7 @@ def registration(request):
     last_name = data['lastName']
     email = data['email']
     username_exist = False
-    #email_exist = False
+    # email_exist = False
     try:
         # Check if user already exists
         User.objects.get(username=username)
@@ -128,7 +128,7 @@ def add_review(request):
         data = json.loads(request.body)
         try:
             response = post_review(data)
-            return JsonResponse({"status": 200})
+            return JsonResponse({"status": 200, "review": response})
         except Exception:
             return JsonResponse(
                 {
@@ -141,13 +141,13 @@ def add_review(request):
 def get_cars(request):
     count = CarMake.objects.filter().count()
     print(count)
-    if(count == 0):
+    if (count == 0):
         initiate()
     car_models = CarModel.objects.select_related('car_make')
     cars = []
     for car_model in car_models:
         cars.append(
             {
-                "CarModel": car_model.name, 
+                "CarModel": car_model.name,
                 "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels": cars})
